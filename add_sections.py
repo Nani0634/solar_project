@@ -1,0 +1,52 @@
+#!/usr/bin/env python3
+import re
+
+with open('index.html', 'r', encoding='utf-8') as f:
+    content = f.read()
+
+new_content = '''
+
+        <!-- Scope & System Specifications -->
+        <div class="scope-block glass-card" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300">
+          <h3><i class="fas fa-rocket"></i> 1.6 Project Scope & System Specifications</h3>
+          <h4 style="color: var(--primary); margin-top: 10px; margin-bottom: 8px;">Scope of Work:</h4>
+          <p>This project focuses on the design, development, testing, and deployment of a complete IoT-based irrigation automation system for small to medium agricultural plots (0.25–1 hectare). The system is designed to be plug-and-play, requiring minimal technical expertise for installation and configuration. The scope includes: (1) Hardware selection and integration of 10 key components; (2) Firmware development for the ESP32 microcontroller using Arduino IDE with Blynk library integration; (3) Calibration and testing of soil moisture sensors across different soil types; (4) Mobile app configuration and dashboard customization in the Blynk platform; (5) Field testing over a 30-day operational cycle under real agricultural conditions; (6) Data collection, analysis, and performance documentation.</p>
+          <h4 style="color: var(--primary); margin-top: 15px; margin-bottom: 8px;">System Specifications & Operating Parameters:</h4>
+          <ul style="list-style: none; padding-left: 20px;">
+            <li style="margin-bottom: 6px;"><strong>Operating Voltage:</strong> 12V DC (primary); 3.3V (microcontroller logic); 5V (relay module)</li>
+            <li style="margin-bottom: 6px;"><strong>Solar Panel Output:</strong> 10–20W (peak), 12V DC nominal</li>
+            <li style="margin-bottom: 6px;"><strong>Battery Capacity:</strong> 84Wh (12V 7Ah); practical usable capacity ~50Wh (60% DoD)</li>
+            <li style="margin-bottom: 6px;"><strong>System Continuous Load:</strong> 0.5W (ESP32 + sensors + Wi-Fi); Peak Load: 24W (pump active)</li>
+            <li style="margin-bottom: 6px;"><strong>Pump Flow Rate:</strong> 3–5 LPM (liters per minute) at 12V; Max head: 3m</li>
+            <li style="margin-bottom: 6px;"><strong>Sensor Accuracy:</strong> Moisture ±3%, Temperature ±2°C, Humidity ±5%</li>
+            <li style="margin-bottom: 6px;"><strong>Automation Thresholds:</strong> Pump ON at &lt;30% soil moisture; Pump OFF at &gt;70% soil moisture</li>
+            <li style="margin-bottom: 6px;"><strong>Update Frequency:</strong> Sensor polling every 5 minutes; Blynk cloud sync every 10 seconds</li>
+            <li style="margin-bottom: 6px;"><strong>Wi-Fi Range:</strong> Effective coverage up to 50m from router (line-of-sight); requires 2.4GHz band</li>
+            <li style="margin-bottom: 6px;"><strong>Battery Runtime:</strong> 8–16 hours without solar charging (depends on pump duty cycle)</li>
+          </ul>
+        </div>
+
+        <!-- Design Philosophy -->
+        <div class="philosophy-block glass-card" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="400">
+          <h3><i class="fas fa-lightbulb"></i> 1.7 Design Philosophy & Innovation Approach</h3>
+          <h4 style="color: var(--secondary); margin-top: 10px; margin-bottom: 8px;">Simplicity & Reliability:</h4>
+          <p>The system prioritizes straightforward, proven technology components over cutting-edge sensors that may lack durability in harsh agricultural environments. The choice of ESP32 over more complex IoT platforms reflects the philosophy that a 5-year-old robust device beats a 5-month-old unreliable one in farming contexts. All components are industrial-grade, temperature-rated for -20°C to +85°C operation, suitable for outdoor field deployment.</p>
+          <h4 style="color: var(--secondary); margin-top: 10px; margin-bottom: 8px;">Cost-Effectiveness:</h4>
+          <p>Total system cost is constrained to ₹3,500–₹5,000, making it affordable for small and marginal farmers. Every component is commodity-grade available on the global market, ensuring easy replacement and maintenance without vendor lock-in. The system ROI (Return on Investment) is achieved within 2–3 years through water savings and reduced labor costs.</p>
+          <h4 style="color: var(--secondary); margin-top: 10px; margin-bottom: 8px;">Modularity & Scalability:</h4>
+          <p>The architecture is designed to scale from a single 1-hectare plot to 100+ hectares using multiple ESP32 nodes in a mesh network topology. A farmer can add additional soil moisture sensor nodes by simply programming them with the same firmware and Blynk auth token. This distributed architecture provides fault tolerance—if one node fails, others continue operating independently.</p>
+          <h4 style="color: var(--secondary); margin-top: 10px; margin-bottom: 8px;">User-Centric Design:</h4>
+          <p>The Blynk mobile app interface requires zero programming knowledge to operate. Threshold values, alert settings, and manual overrides are all configurable through intuitive GUI sliders and toggles, making the technology accessible to non-technical farmers across all age groups and educational backgrounds.</p>
+        </div>'''
+
+# Find the location after Research Farms and before closing div/section
+pattern = r'(<div class="app-mini-card"><i class="fas fa-flask"></i><span>Research Farms</span></div>\n          </div>\n        </div>)'
+replacement = r'\1' + new_content
+
+result = re.sub(pattern, replacement, content)
+
+with open('index.html', 'w', encoding='utf-8') as f:
+    f.write(result)
+
+print('Successfully added new sections to the Introduction chapter!')
+print('Added sections 1.6 and 1.7 with detailed content.')
